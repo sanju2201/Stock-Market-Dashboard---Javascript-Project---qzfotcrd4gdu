@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Roboto:wght@100;400&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#container {
+  min-height: 90vh;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: rgb(240, 240, 240);
+  padding: 2.5rem;
+  margin-top: 30px;
+  border-radius: 1rem;
+}
+
+.head-section {
+  background: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0.5rem;
+  margin: 3rem, 0;
+  border-radius: 1rem;
+}
+
+.head-section h2 {
+  display: inline;
+  font-size: 1.4rem;
+  align-self: center;
+}
+
+#arrow-up {
+  font-size: 2rem;
+  color: rgb(57, 246, 0);
+}
+#arrow-down {
+  font-size: 2rem;
+  color: rgb(255, 0, 0);
+}
+
+.option-menu {
+  background: rgb(217, 217, 217);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 1rem;
+}
+
+.search {
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.search-bar {
+  width: 90%;
+  height: 80%;
+  display: grid;
+  grid-template-columns: 4.5fr 0.5fr;
+  gap: 0.5rem;
+}
+
+.search-bar input {
+  border-radius: 1rem;
+  padding: 0 1rem;
+  border: none;
+  background: rgb(156, 155, 155);
+  color: black;
+  font-size: 1.2rem;
+}
+
+.search-bar button {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  border: none;
+  background: rgb(156, 155, 155);
+}
+
+.search-bar button i {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: white;
+}
+
+.watchlist-section {
+  background: rgb(217, 217, 217);
+  border-radius: 1rem;
+  min-height: 100%;
+}
