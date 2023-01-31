@@ -53,95 +53,44 @@ https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&inter
 
 // fetch("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AMZN&interval=5min&apikey=3KSL9WN0OHTD9PZI")
 //   .then((res) => res.json())
-//   .then((Items) => {
-//     console.log(Items);
+//   .then((fetchedObj) => {
+//     console.log(fetchedObj);
 //   })
 //   .catch((error) => {
 //     console.log("ERROR IN API CALL", error);
 //   });
 
 
-//   const obj ={
-//     "Meta Data": {
-//         "1. Information": "Intraday (5min) open, high, low, close prices and volume",
-//         "2. Symbol": "IBM",
-//         "3. Last Refreshed": "2023-01-30 20:00:00",
-//         "4. Interval": "5min",
-//         "5. Output Size": "Compact",
-//         "6. Time Zone": "US/Eastern"
-//     },
-//     "Time Series (5min)": {
-//         "2023-01-30 20:00:00": {
-//             "1. open": "135.3700",
-//             "2. high": "135.3700",
-//             "3. low": "135.3700",
-//             "4. close": "135.3700",
-//             "5. volume": "248"
-//         },
-//         "2023-01-30 19:55:00": {
-//             "1. open": "135.3900",
-//             "2. high": "135.3900",
-//             "3. low": "135.3900",
-//             "4. close": "135.3900",
-//             "5. volume": "285"
-//         }
-//     }
-// }
-
-// console.log(obj["Meta Data"]);
-// console.log(obj["Time Series (5min)"]);
-// console.log(obj["Time Series (5min)"]["2023-01-30 19:55:00"]["1. open"]);
-
-const myObj = {
-    data: {
-        "Information": "Intraday (5min) open, high, low, close prices and volume",
-        "Symbol": "IBM",
-        "Last Refreshed": "2023-01-30 20:00:00",
-        "Interval": "5min",
-        "Output Size": "Compact",
-        "Time Zone": "US/Eastern"
+  const fetchedObj ={
+    "Meta Data": {
+        "1. Information": "Intraday (5min) open, high, low, close prices and volume",
+        "2. Symbol": "IBM",
+        "3. Last Refreshed": "2023-01-30 20:00:00",
+        "4. Interval": "5min",
+        "5. Output Size": "Compact",
+        "6. Time Zone": "US/Eastern"
     },
-    time : {
-        time1 :{
-            "open": "135.3700",
-            "high": "135.3700",
-            "low": "135.3700",
-            "close": "135.3700",
-            "volume": "248"
+    "Time Series (5min)": {
+        "2023-01-30 20:00:00": {
+            "1. open": "136.3700",
+            "2. high": "135.3700",
+            "3. low": "135.3700",
+            "4. close": "135.3700",
+            "5. volume": "248"
         },
-        time2:{
-            "open": "135.3900",
-            "high": "135.3900",
-            "low": "135.3900",
-            "close": "135.3900",
-            "volume": "285"
-        },
-        time3:{
-            "open": "135.3900",
-            "high": "135.3900",
-            "low": "135.3900",
-            "close": "135.3900",
-            "volume": "285"
-        },
-        time4:{
-            "open": "135.3900",
-            "high": "135.3900",
-            "low": "135.3900",
-            "close": "135.3900",
-            "volume": "285"
-        },
-        time5:{
-            "open": "135.3900",
-            "high": "135.3900",
-            "low": "135.3900",
-            "close": "135.3900",
-            "volume": "285"
+        "2023-01-30 19:55:00": {
+            "1. open": "136.3700",
+            "2. high": "135.3900",
+            "3. low": "135.3900",
+            "4. close": "135.3900",
+            "5. volume": "285"
         }
     }
 }
 
-// console.log(myObj["work"]);
 
+// console.log(myObj["work"]);
+const mainContainer = document.getElementById("container");
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 const optionButton = document.querySelectorAll(".option-button");
@@ -171,67 +120,55 @@ optionButton.forEach((item)=>{
 const myWatchlist = [];
 
 searchButton.addEventListener("click", ()=>{
+// mainContainer.addEventListener("keyup", ()=>{
 let symbol = searchInput.value;
-// console.log(symbol);
 let type = document.querySelector(".option-button.active").value;
-// console.log(type);
-changeActiveItem();
-searchInput.value = "";
 
+if(symbol && type){
+changeActiveItem();
 
  // here to fetch API based on the symbol and type
 
-let fetchSymbol = myObj["data"]["Symbol"];
-let fetchType = myObj["data"]["Information"].split(" ")[0];
+let fetchSymbol = fetchedObj["Meta Data"]["2. Symbol"];
+let fetchType = fetchedObj["Meta Data"]["1. Information"].split(" ")[0];
 
-let output = myObj["time"];
+let output = fetchedObj["Time Series (5min)"];
 let openPrice = Object.keys(output);
-let currentPrice = output[openPrice[0]].open;
-let oldPrice = output[openPrice[1]].open;
+let currentPrice = output[openPrice[0]]["1. open"];
+let oldPrice = output[openPrice[1]]["1. open"];
  
-// console.log(oldPrice);
-// console.log(currentPrice);
+createNewListElement(fetchSymbol, currentPrice, oldPrice, fetchType);
 
 
+searchInput.value = "";
+document.querySelector(".option-button.active").value ="";
 
-createNewListElement(symbol, currentPrice, oldPrice, type);
-
-
-
-// then ()
-// if(symbol === fetchSymbol && type === fetchType ){
-//     // console.log("you are going Good");
-// }
-// else {
-//     console.log("Wrong Selection")
-// }
-
+}
 });
+
 
 
 function createNewListElement(symbol, currentPrice, oldPrice, type){
 let listItem = document.createElement("ul");
-
 listItem.setAttribute("class","watchlist");
-listItem.innerHTML = `<li class="list-element symbol">${symbol}</li>
-            <li class="list-element price">${currentPrice}</li>
-            <li class="list-element time">${type}</li>
-            <li class="list-element close">
+listItem.innerHTML = `<li id="symbol" class="list-element symbol">${symbol}</li>
+            <li id="price" class="list-element price">${currentPrice}</li>
+            <li id="information" class="list-element time">${type}</li>
+            <li id="close" class="list-element close">
             <i class="fa-solid fa-xmark"></i>
             </li>`;
 
-// console.log(listItem); 
-
-// let priceElement = document.getElementsByClassName("price");
-// if(oldPrice>currentPrice){
-//     priceElement.classList.add("bg-red");
-// } else if(oldPrice<currentPrice){
-//     priceElement.classList.add("bg-green");
-// }
-
 listContainer.append(listItem);  
-console.log(listContainer); 
-// return listItem;
+let priceCheck = document.getElementById("price");
+
+if(oldPrice > currentPrice){
+    priceCheck.classList.add("bg-red");
+} else if(oldPrice < currentPrice){
+    priceCheck.classList.add("bg-green");
+} else {
+     priceCheck.classList.add("bg-white");
+}
+
 }
 
 
@@ -251,3 +188,7 @@ console.log(listContainer);
 //    Object.keys(output).forEach(key => {
 //   console.log(key, output[key]);
 // });
+
+listContainer.addEventListener("click",()=>{
+    console.log("You clicked Me");
+})

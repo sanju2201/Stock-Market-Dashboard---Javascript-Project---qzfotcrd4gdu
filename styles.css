@@ -99,6 +99,7 @@ body {
   border-radius: 50%;
   border: none;
   background: rgb(156, 155, 155);
+  cursor: pointer;
 }
 
 .search-bar button i {
@@ -186,14 +187,17 @@ body {
   font-size: 1.2rem;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.6);
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .watchlist .price {
-  background: white;
   font-size: 1.2rem;
   font-weight: 600;
-  height: 3rem;
-  width: 5rem;
+  height: 2.75rem;
+  width: 5.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,11 +229,13 @@ body {
 }
 
 .bg-red {
-  background: red;
+  background-color: red;
 }
+
+.bg-green {
+  background: rgb(0, 245, 0);
+}
+
 .bg-white {
   background: white;
-}
-.bg-green {
-  background: green;
 }
