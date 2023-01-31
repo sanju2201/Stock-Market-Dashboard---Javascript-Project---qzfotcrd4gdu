@@ -64,7 +64,7 @@ https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&inter
   const fetchedObj ={
     "Meta Data": {
         "1. Information": "Intraday (5min) open, high, low, close prices and volume",
-        "2. Symbol": "IBM",
+        "2. Symbol": "AMZN",
         "3. Last Refreshed": "2023-01-30 20:00:00",
         "4. Interval": "5min",
         "5. Output Size": "Compact",
@@ -151,6 +151,9 @@ document.querySelector(".option-button.active").value ="";
 function createNewListElement(symbol, currentPrice, oldPrice, type){
 let listItem = document.createElement("ul");
 listItem.setAttribute("class","watchlist");
+type = type.toUpperCase();
+currentPrice = (Number(currentPrice)).toFixed(2);
+
 listItem.innerHTML = `<li id="symbol" class="list-element symbol">${symbol}</li>
             <li id="price" class="list-element price">${currentPrice}</li>
             <li id="information" class="list-element time">${type}</li>
@@ -160,6 +163,7 @@ listItem.innerHTML = `<li id="symbol" class="list-element symbol">${symbol}</li>
 
 listContainer.append(listItem);  
 let priceCheck = document.getElementById("price");
+console.log(type);
 
 if(oldPrice > currentPrice){
     priceCheck.classList.add("bg-red");
