@@ -51,7 +51,7 @@ https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&inter
 //   });
 
 
-// fetch("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=3KSL9WN0OHTD9PZI")
+// fetch("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AMZN&interval=5min&apikey=3KSL9WN0OHTD9PZI")
 //   .then((res) => res.json())
 //   .then((Items) => {
 //     console.log(Items);
@@ -115,6 +115,27 @@ const myObj = {
             "low": "135.3900",
             "close": "135.3900",
             "volume": "285"
+        },
+        time3:{
+            "open": "135.3900",
+            "high": "135.3900",
+            "low": "135.3900",
+            "close": "135.3900",
+            "volume": "285"
+        },
+        time4:{
+            "open": "135.3900",
+            "high": "135.3900",
+            "low": "135.3900",
+            "close": "135.3900",
+            "volume": "285"
+        },
+        time5:{
+            "open": "135.3900",
+            "high": "135.3900",
+            "low": "135.3900",
+            "close": "135.3900",
+            "volume": "285"
         }
     }
 }
@@ -123,22 +144,110 @@ const myObj = {
 
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
+const optionButton = document.querySelectorAll(".option-button");
 const intraday = document.getElementById("intraday");
 const daily = document.getElementById("daily");
 const weekly = document.getElementById("weekly");
 const monthly = document.getElementById("monthly");
+const listContainer = document.getElementById("watchlist-container");
 
-const optionButton = document.querySelectorAll(".option-button");
 
+// ///////// Active Button /////////////
 optionButton.forEach((item)=>{
     item.addEventListener("click",()=>{
-        changeAtiveItem();
+        changeActiveItem();
         item.classList.add("active");
+        // console.log(item.value);
     })
 });
 
-const changeAtiveItem = ()=>{
+const changeActiveItem = ()=>{
 optionButton.forEach((item)=>{
     item.classList.remove("active");
 })
 };
+
+// //////// Taking Data from Input ///////////
+const myWatchlist = [];
+
+searchButton.addEventListener("click", ()=>{
+let symbol = searchInput.value;
+// console.log(symbol);
+let type = document.querySelector(".option-button.active").value;
+// console.log(type);
+changeActiveItem();
+searchInput.value = "";
+
+
+ // here to fetch API based on the symbol and type
+
+let fetchSymbol = myObj["data"]["Symbol"];
+let fetchType = myObj["data"]["Information"].split(" ")[0];
+
+let output = myObj["time"];
+let openPrice = Object.keys(output);
+let currentPrice = output[openPrice[0]].open;
+let oldPrice = output[openPrice[1]].open;
+ 
+// console.log(oldPrice);
+// console.log(currentPrice);
+
+
+
+createNewListElement(symbol, currentPrice, oldPrice, type);
+
+
+
+// then ()
+// if(symbol === fetchSymbol && type === fetchType ){
+//     // console.log("you are going Good");
+// }
+// else {
+//     console.log("Wrong Selection")
+// }
+
+});
+
+
+function createNewListElement(symbol, currentPrice, oldPrice, type){
+let listItem = document.createElement("ul");
+
+listItem.setAttribute("class","watchlist");
+listItem.innerHTML = `<li class="list-element symbol">${symbol}</li>
+            <li class="list-element price">${currentPrice}</li>
+            <li class="list-element time">${type}</li>
+            <li class="list-element close">
+            <i class="fa-solid fa-xmark"></i>
+            </li>`;
+
+// console.log(listItem); 
+
+// let priceElement = document.getElementsByClassName("price");
+// if(oldPrice>currentPrice){
+//     priceElement.classList.add("bg-red");
+// } else if(oldPrice<currentPrice){
+//     priceElement.classList.add("bg-green");
+// }
+
+listContainer.append(listItem);  
+console.log(listContainer); 
+// return listItem;
+}
+
+
+
+// listContainer.addEventListener("keydown",()=>{});
+
+// listContainer.addEventListener("keyup", (event) => {
+//   if (event.keyCode === 13) {
+//     console.log('Enter key pressed')
+//   }
+// });
+
+
+// https://sentry.io/answers/save-arrays-objects-browser-storage/#:~:text=The%20code%20example%20below%20shows,jsonArray%20as%20the%20value%20localStorage.
+
+//     let output = myObj["time"];
+//    Object.keys(output).forEach(key => {
+//   console.log(key, output[key]);
+// });

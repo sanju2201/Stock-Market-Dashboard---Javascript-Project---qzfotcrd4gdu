@@ -34,7 +34,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   margin: 1rem, 0;
   border-radius: 1rem;
 }
@@ -44,16 +44,17 @@ body {
   font-size: 1.4rem;
   letter-spacing: -1px;
   word-spacing: 3px;
-  /* align-self: center; */
 }
 
 #arrow-up {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: rgb(57, 246, 0);
+  margin-right: 0.5rem;
 }
 #arrow-down {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: rgb(255, 0, 0);
+  margin-left: 0.5rem;
 }
 
 .option-menu {
@@ -158,26 +159,30 @@ body {
 }
 
 .watchlist-container {
-  min-height: 20rem;
+  height: 18rem;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
+  align-items: center;
+  overflow: auto;
+  scrollbar-width: none;
+}
+.watchlist-container::-webkit-scrollbar {
+  display: none;
 }
 
 .watchlist-container .watchlist {
-  /* width: 100%; */
+  width: 90%;
   list-style-type: none;
   height: 3.5rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
   background: rgb(171, 171, 171);
-  margin: 0.5rem 2rem;
+  margin: 0.5rem 1rem;
   border-radius: 0.75rem;
 }
 
 .watchlist .symbol {
-  /* background: white; */
   font-size: 1.2rem;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.6);
@@ -214,10 +219,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: white;
   font-weight: 900;
 }
+
 .bg-red {
   background: red;
 }
