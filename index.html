@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
     />
+    <link rel="stylesheet" href="styles.css" />
     <title>Stock Market Dashboard</title>
-    <script src="App.js"></script>
+    <script src="App.js" defer></script>
   </head>
   <body>
     <main id="container">
@@ -25,17 +25,21 @@
       <div class="option-menu">
         <div class="search">
           <form action="" class="search-bar">
-            <input type="text" placeholder="Search for Symbol" />
-            <button type="submit">
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search for Symbol"
+            />
+            <button id="search-button" type="submit">
               <i class="uil uil-search"></i>
             </button>
           </form>
         </div>
         <div class="option">
-          <div id="opt intraday">INTRADAY</div>
-          <div id="opt daily">DAILY</div>
-          <div id="opt weekly">WEEKLY</div>
-          <div id="opt monthly">MONTHLY</div>
+          <button class="option-button active" id="intraday">INTRADAY</button>
+          <button class="option-button" id="daily">DAILY</button>
+          <button class="option-button" id="weekly">WEEKLY</button>
+          <button class="option-button" id="monthly">MONTHLY</button>
         </div>
       </div>
 
@@ -49,28 +53,28 @@
             <li class="list-element symbol">AMZN</li>
             <li class="list-element price">123.45</li>
             <li class="list-element time">INTRADAY</li>
-            <li class="list-element colse">
-              <i class="uil uil-times-circle"></i>
+            <li class="list-element close">
+              <i class="uil uil-times"></i>
+            </li>
+          </ul>
+
+          <!-- <ul class="watchlist">
+            <li class="list-element symbol">AMZN</li>
+            <li class="list-element price">123.45</li>
+            <li class="list-element time">DAILY</li>
+            <li class="list-element close">
+              <i class="uil uil-times"></i>
             </li>
           </ul>
 
           <ul class="watchlist">
             <li class="list-element symbol">AMZN</li>
             <li class="list-element price">123.45</li>
-            <li class="list-element time">INTRADAY</li>
-            <li class="list-element colse">
-              <i class="uil uil-times-circle"></i>
+            <li class="list-element time">MONTHLY</li>
+            <li class="list-element close">
+              <i class="uil uil-times"></i>
             </li>
-          </ul>
-
-          <ul class="watchlist">
-            <li class="list-element symbol">AMZN</li>
-            <li class="list-element price">123.45</li>
-            <li class="list-element time">INTRADAY</li>
-            <li class="list-element colse">
-              <i class="uil uil-times-circle"></i>
-            </li>
-          </ul>
+          </ul> -->
         </div>
       </div>
     </main>
