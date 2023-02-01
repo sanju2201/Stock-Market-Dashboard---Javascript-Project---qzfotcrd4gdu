@@ -84,10 +84,30 @@ https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&inter
             "3. low": "135.3900",
             "4. close": "135.3900",
             "5. volume": "285"
-        }
+        },
+        "2023-01-30 19:50:00": {
+            "1. open": "132.3700",
+            "2. high": "135.3900",
+            "3. low": "135.3900",
+            "4. close": "135.3900",
+            "5. volume": "285"
+        },
+        "2023-01-30 19:45:00": {
+            "1. open": "139.3700",
+            "2. high": "135.3900",
+            "3. low": "135.3900",
+            "4. close": "135.3900",
+            "5. volume": "285"
+        },
+        "2023-01-30 19:40:00": {
+            "1. open": "131.3700",
+            "2. high": "135.3900",
+            "3. low": "135.3900",
+            "4. close": "135.3900",
+            "5. volume": "285"
+        },
     }
 }
-
 
 // console.log(myObj["work"]);
 const mainContainer = document.getElementById("container");
@@ -100,6 +120,9 @@ const weekly = document.getElementById("weekly");
 const monthly = document.getElementById("monthly");
 const listContainer = document.getElementById("watchlist-container");
 
+// Watchlist to be stored in local Storage
+const myWatchlist = new Map();
+// localStorage.setItem("myList",myWatchlist);
 
 // ///////// Active Button /////////////
 optionButton.forEach((item)=>{
@@ -117,10 +140,8 @@ optionButton.forEach((item)=>{
 };
 
 // //////// Taking Data from Input ///////////
-const myWatchlist = [];
-
+/*
 searchButton.addEventListener("click", ()=>{
-// mainContainer.addEventListener("keyup", ()=>{
 let symbol = searchInput.value;
 let type = document.querySelector(".option-button.active").value;
 
@@ -139,31 +160,78 @@ let oldPrice = output[openPrice[1]]["1. open"];
  
 createNewListElement(fetchSymbol, currentPrice, oldPrice, fetchType);
 
-
 searchInput.value = "";
-document.querySelector(".option-button.active").value ="";
+type = "";
+}
+});
 
+*/
+
+searchButton.addEventListener("click", ()=>{
+let symbol = searchInput.value;
+let type = document.querySelector(".option-button.active").value;
+console.log(symbol)
+console.log(type)
+
+if(symbol && type){
+changeActiveItem();
+
+fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_${type}&symbol=${symbol}&interval=5min&apikey=3KSL9WN0OHTD9PZI`)
+  .then((res) => res.json())
+  .then((fetchedObj) => {
+    console.log("chlra ha")
+  
+let fetchSymbol = fetchedObj["Meta Data"]["2. Symbol"];
+let fetchType = fetchedObj["Meta Data"]["1. Information"].split(" ")[0];
+
+let output = fetchedObj["Time Series (5min)"];
+let openPrice = Object.keys(output);
+let currentPrice = output[openPrice[0]]["1. open"];
+let oldPrice = output[openPrice[1]]["1. open"];
+ 
+createNewListElement(fetchedObj, fetchSymbol, currentPrice, oldPrice, fetchType);
+searchInput.value ="";
+symbol= "";
+type = "";
+console.log("then chlra ha")
+ })
+ .catch((error) => {
+     symbol= "";
+     type = "";
+     searchInput.value = "";
+     console.log("ERROR IN API CALL",error);
+    // alert("Wrong Symbol Entered");
+  });
 }
 });
 
 
 
-function createNewListElement(symbol, currentPrice, oldPrice, type){
+
+// Function to check for input and if not Present add to watchlist
+function createNewListElement(fetchedObj, fetchSymbol, currentPrice, oldPrice, fetchType){
+if (myWatchlist.has(`${fetchSymbol} ${fetchType}`)){
+    console.log("aleady present");
+}  else{
 let listItem = document.createElement("ul");
 listItem.setAttribute("class","watchlist");
-type = type.toUpperCase();
 currentPrice = (Number(currentPrice)).toFixed(2);
 
-listItem.innerHTML = `<li id="symbol" class="list-element symbol">${symbol}</li>
+listItem.innerHTML = `<li id="symbol" class="list-element symbol">${fetchSymbol}</li>
             <li id="price" class="list-element price">${currentPrice}</li>
-            <li id="information" class="list-element time">${type}</li>
+            <li id="information" class="list-element time">${fetchType.toUpperCase()}</li>
             <li id="close" class="list-element close">
             <i class="fa-solid fa-xmark"></i>
             </li>`;
 
 listContainer.append(listItem);  
-let priceCheck = document.getElementById("price");
-console.log(type);
+// let priceCheck = document.getElementById("price");
+
+let ele = document.querySelector(".watchlist:last-child");
+let priceCheck = ele.querySelector(".price");
+console.log(ele);
+
+console.log(priceCheck);
 
 if(oldPrice > currentPrice){
     priceCheck.classList.add("bg-red");
@@ -172,8 +240,29 @@ if(oldPrice > currentPrice){
 } else {
      priceCheck.classList.add("bg-white");
 }
+console.log(currentPrice);
+console.log(oldPrice);
+
+myWatchlist.set(`${fetchSymbol} ${fetchType}`,getLastFiveDetails(fetchedObj));
 
 }
+console.log(myWatchlist);
+}
+
+
+// Fetching last 5 details
+function getLastFiveDetails(fetchedObj){
+let output = fetchedObj["Time Series (5min)"];
+let dayObject = Object.keys(output);
+
+let returnedMap = new Map();
+for(let i=0;i<5;i++){
+   returnedMap.set(dayObject[i].split(" ")[1], output[dayObject[i]]); 
+}
+
+return returnedMap;
+}
+
 
 
 
@@ -193,6 +282,21 @@ if(oldPrice > currentPrice){
 //   console.log(key, output[key]);
 // });
 
-listContainer.addEventListener("click",()=>{
-    console.log("You clicked Me");
-})
+// listContainer.addEventListener("click",()=>{
+//     console.log("You clicked Me");
+// })
+
+/*
+Map Methods
+Method	Description
+new Map()	Creates a new Map object
+set()	Sets the value for a key in a Map
+get()	Gets the value for a key in a Map
+clear()	Removes all the elements from a Map
+delete()	Removes a Map element specified by a key
+has()	Returns true if a key exists in a Map
+forEach()	Invokes a callback for each key/value pair in a Map
+entries()	Returns an iterator object with the [key, value] pairs in a Map
+keys()	Returns an iterator object with the keys in a Map
+values()	Returns an iterator object of the values in a Map
+*/
