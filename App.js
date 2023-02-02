@@ -76,6 +76,7 @@ const weekly = document.getElementById("weekly");
 const monthly = document.getElementById("monthly");
 const listContainer = document.getElementById("watchlist-container");
 let closeButton = document.getElementById("close");
+let listItem;
 
 
 // Watchlist to be stored in local Storage
@@ -135,23 +136,16 @@ console.log("then chlra ha")
 }
 });
 
-
-
 // Function to check for input and if not Present add to watchlist
 function createNewListElement(fetchedObj, fetchSymbol, currentPrice, oldPrice, fetchType){
 if (myWatchlist.has(`${fetchSymbol}-${fetchType}`)){
     console.log("aleady present");
-    // let removeClass = listContainer.querySelector(`.${fetchSymbol}-${fetchType}`);
-    // removeClass.classList.remove("removed");
 }  else{
-
-    console.log(listContainer.innerHTML)
-let listItem = document.createElement("ul");
+listItem = document.createElement("ul");
 listItem.classList.add(`${fetchSymbol}-${fetchType}`)
 listItem.classList.add("watchlist");
-
 listItem.id = `${fetchSymbol}-${fetchType}`;
-listItem.setAttribute("onclick","showDetails(event)");
+listItem.setAttribute("onclick","showDetails(this)");
 currentPrice = (Number(currentPrice)).toFixed(2);
 
 listItem.innerHTML = `<li id="symbol" class="${fetchSymbol}-${fetchType} symbol">${fetchSymbol}</li>
@@ -161,13 +155,8 @@ listItem.innerHTML = `<li id="symbol" class="${fetchSymbol}-${fetchType} symbol"
             <i class="${fetchSymbol}-${fetchType} fa-solid fa-xmark"></i>
            </li>`;
 
-// listItem.classList.remove("removed");
-console.log(listItem.classList);
+listContainer.appendChild(listItem);  
 
-listContainer.append(listItem);  
-// let priceCheck = document.getElementById("price");
-// console.log(listItem);
- console.log("hoja bhai pass 170") 
 let watchlist = document.querySelector(".watchlist:last-child");
 let priceCheck = watchlist.querySelector(".price");
 
@@ -180,11 +169,10 @@ if(oldPrice > currentPrice){
 }
 
 myWatchlist.set(`${fetchSymbol}-${fetchType}`,getLastFiveDetails(fetchedObj, fetchType));
-
-
 }
 console.log(myWatchlist);
 }
+
 
 
 // Fetching last 5 details
@@ -206,6 +194,8 @@ return returnedMap;
 }
 
 
+//  Delete Element from the Watchlist
+
 function closeElement(event){
     event.stopPropagation();
     
@@ -220,18 +210,79 @@ function closeElement(event){
 }
 
 
-function createModal(){
-    let divContainer = document.createElement("div");
-    divContainer.classList.add();
-}
-
-
+// var status = true;
 function showDetails(event){
-    // console.log("Clicked on Item");
-    let clickedElement = event.target.classList[0];
-    let result = myWatchlist.get(clickedElement);
-     console.log(result);
+ let itemID = listItem.id;
 
+ if(itemID.includes("Intraday")){
+    dateOrTime = "TIME";
+ }
+ else{
+    dateOrTime = "DATE"
+ }
+
+  let detailedModal = document.createElement("div");
+     detailedModal.className = `${itemID}-detail detailed-model`;
+     detailedModal.innerHTML = `<ul class="detail-list">
+            <li id="date">${dateOrTime}</li>
+            <li id="open">OPEN</li>
+            <li id="high">HIGH</li>
+            <li id="low">LOW</li>
+            <li id="close">CLOSE</li>
+            <li id="volume">VOLUME</li>
+          </ul>`
+  
+    
+console.log(itemID);
+   
+
+    let timeMap = myWatchlist.get(itemID)
+    console.log(timeMap);
+
+    let mapIterator = timeMap.keys();
+    console.log(mapIterator)
+
+    const iterator1 = mapIterator[Symbol.iterator]();
+
+  for (const timeDate of iterator1) {
+    console.log(timeDate); // variable for Date or Time
+
+    let rowObject = timeMap.get(timeDate);
+    console.log(rowObject); // main Object from where need to fetch data
+
+    let open  = giveMeKey("open", rowObject);
+    let high = giveMeKey("high", rowObject);
+    let low = giveMeKey("low", rowObject);
+    let close = giveMeKey("close", rowObject);
+    let volume = giveMeKey("volume", rowObject);
+
+    // console.log(open, high, low, close, volume);
+
+    // Check present string and Return Actual actual Key As per Object
+    function giveMeKey(check, rowObject){
+    let mainKeys = Object.keys(rowObject);
+    console.log(rowObject)
+    for(let key of mainKeys){
+    if(key.includes(check))
+    return key;
+   }
+   }
+
+    let rowDetail = document.createElement("ul");
+     rowDetail.className = `${itemID} detailed-row`;
+     rowDetail.className = "detail-list";
+     rowDetail.innerHTML = 
+            `<li id="date">${timeDate}</li>
+            <li id="open">${(Number(rowObject[open])).toFixed(2)}</li>
+            <li id="high">${(Number(rowObject[high])).toFixed(2)}</li>
+            <li id="low">${(Number(rowObject[low])).toFixed(2)}</li>
+            <li id="close">${(Number(rowObject[close])).toFixed(2)}</li>
+            <li id="volume">${rowObject[volume]}</li>`
+
+    
+       detailedModal.appendChild(rowDetail);    
+}
+ listItem.after(detailedModal);
 }
 
 

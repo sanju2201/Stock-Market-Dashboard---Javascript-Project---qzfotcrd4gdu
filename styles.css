@@ -180,6 +180,7 @@ body {
   align-items: center;
   overflow: auto;
   scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 .watchlist-container::-webkit-scrollbar {
   display: none;
@@ -246,10 +247,6 @@ body {
   align-items: center;
 }
 
-.watchlist.removed {
-  display: none;
-}
-
 .bg-red {
   background-color: red;
 }
@@ -260,4 +257,31 @@ body {
 
 .bg-white {
   background: white;
+}
+
+.detailed-model {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  width: 90%;
+  height: 100px;
+  padding: 0.25rem 1rem;
+  border-radius: 0.6rem;
+  /* margin-top: -0.5rem; */
+}
+
+.detailed-model .detail-list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 25% 14% 15% 15% 15% 20%;
+}
+
+.detailed-model .detail-list li {
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
