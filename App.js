@@ -97,39 +97,11 @@ optionButton.forEach((item)=>{
 })
 };
 
-// //////// Taking Data from Input ///////////
-/*
-searchButton.addEventListener("click", ()=>{
-let symbol = searchInput.value;
-let type = document.querySelector(".option-button.active").value;
-
-if(symbol && type){
-changeActiveItem();
-
- // here to fetch API based on the symbol and type
-
-let fetchSymbol = fetchedObj["Meta Data"]["2. Symbol"];
-let fetchType = fetchedObj["Meta Data"]["1. Information"].split(" ")[0];
-
-let output = fetchedObj["Time Series (5min)"];
-let openPrice = Object.keys(output);
-let currentPrice = output[openPrice[0]]["1. open"];
-let oldPrice = output[openPrice[1]]["1. open"];
- 
-createNewListElement(fetchSymbol, currentPrice, oldPrice, fetchType);
-
-searchInput.value = "";
-type = "";
-}
-});
-
-*/
+// Fetching Data
 
 searchButton.addEventListener("click", ()=>{
 let symbol = searchInput.value;
 let type = document.querySelector(".option-button.active").value;
-// console.log(symbol)
-// console.log(type)
 
 if(symbol && type){
 changeActiveItem();
@@ -172,9 +144,13 @@ if (myWatchlist.has(`${fetchSymbol}-${fetchType}`)){
     // let removeClass = listContainer.querySelector(`.${fetchSymbol}-${fetchType}`);
     // removeClass.classList.remove("removed");
 }  else{
+
+    console.log(listContainer.innerHTML)
 let listItem = document.createElement("ul");
 listItem.classList.add(`${fetchSymbol}-${fetchType}`)
 listItem.classList.add("watchlist");
+
+listItem.id = `${fetchSymbol}-${fetchType}`;
 listItem.setAttribute("onclick","showDetails(event)");
 currentPrice = (Number(currentPrice)).toFixed(2);
 
@@ -185,10 +161,13 @@ listItem.innerHTML = `<li id="symbol" class="${fetchSymbol}-${fetchType} symbol"
             <i class="${fetchSymbol}-${fetchType} fa-solid fa-xmark"></i>
            </li>`;
 
+// listItem.classList.remove("removed");
+console.log(listItem.classList);
+
 listContainer.append(listItem);  
 // let priceCheck = document.getElementById("price");
 // console.log(listItem);
-
+ console.log("hoja bhai pass 170") 
 let watchlist = document.querySelector(".watchlist:last-child");
 let priceCheck = watchlist.querySelector(".price");
 
@@ -201,6 +180,7 @@ if(oldPrice > currentPrice){
 }
 
 myWatchlist.set(`${fetchSymbol}-${fetchType}`,getLastFiveDetails(fetchedObj, fetchType));
+
 
 }
 console.log(myWatchlist);
@@ -231,17 +211,12 @@ function closeElement(event){
     
     let clickedElement = event.target.classList[0];
     let elementToBeRemoved = listContainer.querySelector(`.${clickedElement}`);
-    elementToBeRemoved.classList.add("removed");
-    
+
+    let toBeRemoved = document.getElementById(elementToBeRemoved.classList[0]);
+    listContainer.removeChild(toBeRemoved);
+
     myWatchlist.delete(clickedElement);
-    
-
-
-
-    // clickedElement.classList.remove("");
     console.log(myWatchlist)
-    // watchlist.classList.remove("removed");
-
 }
 
 

@@ -196,6 +196,7 @@ body {
   margin: 0.5rem 1rem;
   border-radius: 0.75rem;
   cursor: pointer;
+  /* display: none; */
 }
 
 .watchlist .symbol {
