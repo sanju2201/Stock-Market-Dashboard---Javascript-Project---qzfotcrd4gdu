@@ -144,6 +144,7 @@ if (myWatchlist.has(`${fetchSymbol}-${fetchType}`)){
 listItem = document.createElement("ul");
 listItem.classList.add(`${fetchSymbol}-${fetchType}`)
 listItem.classList.add("watchlist");
+listItem.setAttribute(`data-${fetchSymbol}-${fetchType}`,"0");
 listItem.id = `${fetchSymbol}-${fetchType}`;
 listItem.setAttribute("onclick","showDetails(this)");
 currentPrice = (Number(currentPrice)).toFixed(2);
@@ -206,36 +207,37 @@ function closeElement(event){
     listContainer.removeChild(toBeRemoved);
 
     myWatchlist.delete(clickedElement);
-    console.log(myWatchlist)
 }
 
 
 // Remoing the Detaied Modal
-function removeDetails(){
-    let itemID = listItem.id;
-    console.log(listItem);
-  
+function removeDetails(event){
+    console.log(event)
+    let itemID = event.id;
+     let deleteElement = listContainer.querySelector(`.${itemID}-detail`);
+     console.log(deleteElement);
+    listContainer.removeChild(deleteElement);
+    console.log(listContainer);
+  event.setAttribute(`data-${itemID}`,0);
 }
 
 
-// var status = false;
 
-// var status = true;
+
 function showDetails(event){
- let itemID = listItem.id;
-
- if(true){
-//  removeDetails(event);
+ let itemID = event.id;
+ if(event.getAttribute(`data-${itemID}`) != 0){  
+   removeDetails(event);
  }
- else {}
-
+ else {
+  event.setAttribute(`data-${itemID}`,1);
+ 
  if(itemID.includes("Intraday")){
     dateOrTime = "TIME";
  }
  else{
     dateOrTime = "DATE"
  }
-
   let detailedModal = document.createElement("div");
      detailedModal.className = `${itemID}-detail detailed-model`;
      detailedModal.innerHTML = `<ul class="detail-list">
@@ -246,11 +248,7 @@ function showDetails(event){
             <li id="close">CLOSE</li>
             <li id="volume">VOLUME</li>
           </ul>`
-  
-    
-// console.log(itemID);
-   
-
+     
     let timeMap = myWatchlist.get(itemID)
     // console.log(timeMap);
 
@@ -297,9 +295,12 @@ function showDetails(event){
     
        detailedModal.appendChild(rowDetail);    
 }
- listItem.after(detailedModal);
+ event.after(detailedModal);
+ event.prop = true;
+ console.log(event);
+console.log(listContainer);
 
-
+}
 }
 
 
