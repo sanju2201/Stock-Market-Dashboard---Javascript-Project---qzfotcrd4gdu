@@ -275,12 +275,12 @@ body {
 .detailed-model .detail-list {
   width: 100%;
   display: grid;
-  grid-template-columns: 25% 14% 15% 15% 15% 20%;
+  grid-template-columns: 23% 14% 14% 14% 14% 21%;
 }
 
 .detailed-model .detail-list li {
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 900;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -124,13 +124,13 @@ createNewListElement(fetchedObj, fetchSymbol, currentPrice, oldPrice, fetchType)
 searchInput.value ="";
 symbol= "";
 type = "";
-console.log("then chlra ha")
+// console.log("Then Block Running")
  })
  .catch((error) => {
      symbol= "";
      type = "";
      searchInput.value = "";
-     console.log("ERROR IN API CALL",error);
+     console.log("Catch Block Running");
     // alert("Wrong Symbol Entered");
   });
 }
@@ -170,7 +170,7 @@ if(oldPrice > currentPrice){
 
 myWatchlist.set(`${fetchSymbol}-${fetchType}`,getLastFiveDetails(fetchedObj, fetchType));
 }
-console.log(myWatchlist);
+// console.log(myWatchlist);
 }
 
 
@@ -210,9 +210,24 @@ function closeElement(event){
 }
 
 
+// Remoing the Detaied Modal
+function removeDetails(){
+    let itemID = listItem.id;
+    console.log(listItem);
+  
+}
+
+
+// var status = false;
+
 // var status = true;
 function showDetails(event){
  let itemID = listItem.id;
+
+ if(true){
+//  removeDetails(event);
+ }
+ else {}
 
  if(itemID.includes("Intraday")){
     dateOrTime = "TIME";
@@ -233,22 +248,22 @@ function showDetails(event){
           </ul>`
   
     
-console.log(itemID);
+// console.log(itemID);
    
 
     let timeMap = myWatchlist.get(itemID)
-    console.log(timeMap);
+    // console.log(timeMap);
 
     let mapIterator = timeMap.keys();
-    console.log(mapIterator)
+    // console.log(mapIterator)
 
     const iterator1 = mapIterator[Symbol.iterator]();
 
-  for (const timeDate of iterator1) {
-    console.log(timeDate); // variable for Date or Time
+  for (const timeDate of iterator1) {   // variable for Date or Time
+    // console.log(timeDate);
 
-    let rowObject = timeMap.get(timeDate);
-    console.log(rowObject); // main Object from where need to fetch data
+    let rowObject = timeMap.get(timeDate); // main Object from where need to fetch data
+    // console.log(rowObject); 
 
     let open  = giveMeKey("open", rowObject);
     let high = giveMeKey("high", rowObject);
@@ -261,7 +276,7 @@ console.log(itemID);
     // Check present string and Return Actual actual Key As per Object
     function giveMeKey(check, rowObject){
     let mainKeys = Object.keys(rowObject);
-    console.log(rowObject)
+    // console.log(rowObject)
     for(let key of mainKeys){
     if(key.includes(check))
     return key;
@@ -283,8 +298,9 @@ console.log(itemID);
        detailedModal.appendChild(rowDetail);    
 }
  listItem.after(detailedModal);
-}
 
+
+}
 
 
 // listContainer.addEventListener("keydown",()=>{});
