@@ -1,71 +1,4 @@
-
-
-// key ==> 3KSL9WN0OHTD9PZI
-// Examples (click for JSON output)
-// https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo */
-
-
-// fetch("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AMZN&interval=5min&apikey=3KSL9WN0OHTD9PZI")
-//   .then((res) => res.json())
-//   .then((fetchedObj) => {
-//     console.log(fetchedObj);
-
-
-//   })
-//   .catch((error) => {
-//     console.log("ERROR IN API CALL", error);
-//   });
-
-
-  const localData ={
-    "Meta Data": {
-        "1. Information": "Intraday (5min) open, high, low, close prices and volume",
-        "2. Symbol": "AMZN",
-        "3. Last Refreshed": "2023-01-30 20:00:00",
-        "4. Interval": "5min",
-        "5. Output Size": "Compact",
-        "6. Time Zone": "US/Eastern"
-    },
-    "Time Series (5min)": {
-        "2023-01-30 20:00:00": {
-            "1. open": "136.3700",
-            "2. high": "135.3700",
-            "3. low": "135.3700",
-            "4. close": "135.3700",
-            "5. volume": "248"
-        },
-        "2023-01-30 19:55:00": {
-            "1. open": "136.3700",
-            "2. high": "135.3900",
-            "3. low": "135.3900",
-            "4. close": "135.3900",
-            "5. volume": "285"
-        },
-        "2023-01-30 19:50:00": {
-            "1. open": "132.3700",
-            "2. high": "135.3900",
-            "3. low": "135.3900",
-            "4. close": "135.3900",
-            "5. volume": "285"
-        },
-        "2023-01-30 19:45:00": {
-            "1. open": "139.3700",
-            "2. high": "135.3900",
-            "3. low": "135.3900",
-            "4. close": "135.3900",
-            "5. volume": "285"
-        },
-        "2023-01-30 19:40:00": {
-            "1. open": "131.3700",
-            "2. high": "135.3900",
-            "3. low": "135.3900",
-            "4. close": "135.3900",
-            "5. volume": "285"
-        },
-    }
-}
-
-// console.log(myObj["work"]);
+//Storing Element
 const mainContainer = document.getElementById("container");
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
@@ -136,6 +69,8 @@ type = "";
 }
 });
 
+
+
 // Function to check for input and if not Present add to watchlist
 function createNewListElement(fetchedObj, fetchSymbol, currentPrice, oldPrice, fetchType){
 if (myWatchlist.has(`${fetchSymbol}-${fetchType}`)){
@@ -156,7 +91,8 @@ listItem.innerHTML = `<li id="symbol" class="${fetchSymbol}-${fetchType} symbol"
             <i class="${fetchSymbol}-${fetchType} fa-solid fa-xmark"></i>
            </li>`;
 
-listContainer.appendChild(listItem);  
+listContainer.appendChild(listItem); 
+
 
 let watchlist = document.querySelector(".watchlist:last-child");
 let priceCheck = watchlist.querySelector(".price");
@@ -170,8 +106,9 @@ if(oldPrice > currentPrice){
 }
 
 myWatchlist.set(`${fetchSymbol}-${fetchType}`,getLastFiveDetails(fetchedObj, fetchType));
+// localStorage.setItem("stockList", listContainer.innerHTML);
 }
-// console.log(myWatchlist);
+
 }
 
 
@@ -194,33 +131,30 @@ for(let i=0;i<5;i++){
 return returnedMap;
 }
 
-
 //  Delete Element from the Watchlist
-
 function closeElement(event){
     event.stopPropagation();
-    
+
     let clickedElement = event.target.classList[0];
     let elementToBeRemoved = listContainer.querySelector(`.${clickedElement}`);
-
     let toBeRemoved = document.getElementById(elementToBeRemoved.classList[0]);
     listContainer.removeChild(toBeRemoved);
-
+    removeDetails(elementToBeRemoved);
     myWatchlist.delete(clickedElement);
-}
 
+    // localStorage.setItem("stockList", listContainer.innerHTML); 
+}
 
 // Remoing the Detaied Modal
 function removeDetails(event){
-    console.log(event)
+    // console.log(event)
     let itemID = event.id;
      let deleteElement = listContainer.querySelector(`.${itemID}-detail`);
-     console.log(deleteElement);
+    //  console.log(deleteElement);
     listContainer.removeChild(deleteElement);
-    console.log(listContainer);
+    // console.log(listContainer);
   event.setAttribute(`data-${itemID}`,0);
 }
-
 
 
 
@@ -250,19 +184,12 @@ function showDetails(event){
           </ul>`
      
     let timeMap = myWatchlist.get(itemID)
-    // console.log(timeMap);
-
     let mapIterator = timeMap.keys();
-    // console.log(mapIterator)
 
     const iterator1 = mapIterator[Symbol.iterator]();
 
   for (const timeDate of iterator1) {   // variable for Date or Time
-    // console.log(timeDate);
-
     let rowObject = timeMap.get(timeDate); // main Object from where need to fetch data
-    // console.log(rowObject); 
-
     let open  = giveMeKey("open", rowObject);
     let high = giveMeKey("high", rowObject);
     let low = giveMeKey("low", rowObject);
@@ -274,7 +201,6 @@ function showDetails(event){
     // Check present string and Return Actual actual Key As per Object
     function giveMeKey(check, rowObject){
     let mainKeys = Object.keys(rowObject);
-    // console.log(rowObject)
     for(let key of mainKeys){
     if(key.includes(check))
     return key;
@@ -296,33 +222,10 @@ function showDetails(event){
        detailedModal.appendChild(rowDetail);    
 }
  event.after(detailedModal);
- event.prop = true;
- console.log(event);
-console.log(listContainer);
-
+ 
 }
 }
 
-
-// listContainer.addEventListener("keydown",()=>{});
-
-// listContainer.addEventListener("keyup", (event) => {
-//   if (event.keyCode === 13) {
-//     console.log('Enter key pressed')
-//   }
-// });
-
-
-// https://sentry.io/answers/save-arrays-objects-browser-storage/#:~:text=The%20code%20example%20below%20shows,jsonArray%20as%20the%20value%20localStorage.
-
-//     let output = myObj["time"];
-//    Object.keys(output).forEach(key => {
-//   console.log(key, output[key]);
-// });
-
-// listContainer.addEventListener("click",()=>{
-//     console.log("You clicked Me");
-// })
 
 /*
 Map Methods
@@ -338,84 +241,3 @@ entries()	Returns an iterator object with the [key, value] pairs in a Map
 keys()	Returns an iterator object with the keys in a Map
 values()	Returns an iterator object of the values in a Map
 */
-
-/*
-{
-    "Meta Data": {
-        "1. Information": "Monthly Prices (open, high, low, close) and Volumes",
-        "2. Symbol": "AMZN",
-        "3. Last Refreshed": "2023-01-31",
-        "4. Time Zone": "US/Eastern"
-    },
-    "Monthly Time Series": {
-        "2023-01-31": {
-            "1. open": "85.4600",
-            "2. high": "103.4850",
-            "3. low": "81.4300",
-            "4. close": "103.1300",
-            "5. volume": "1523798384"
-        }
-    }
-}*/ 
-
-/*
-{
-    "Meta Data": {
-        "1. Information": "Intraday (5min) open, high, low, close prices and volume",
-        "2. Symbol": "AMZN",
-        "3. Last Refreshed": "2023-01-31 20:00:00",
-        "4. Interval": "5min",
-        "5. Output Size": "Compact",
-        "6. Time Zone": "US/Eastern"
-    },
-    "Time Series (5min)": {
-        "2023-01-31 20:00:00": {
-            "1. open": "102.4200",
-            "2. high": "102.5000",
-            "3. low": "102.3900",
-            "4. close": "102.4100",
-            "5. volume": "23326"
-        }
-    }
-}*/ 
-
-/*{
-    "Meta Data": {
-        "1. Information": "Weekly Prices (open, high, low, close) and Volumes",
-        "2. Symbol": "AMZN",
-        "3. Last Refreshed": "2023-01-31",
-        "4. Time Zone": "US/Eastern"
-    },
-    "Weekly Time Series": {
-        "2023-01-31": {
-            "1. open": "101.0900",
-            "2. high": "103.3484",
-            "3. low": "99.0100",
-            "4. close": "103.1300",
-            "5. volume": "137219113"
-        }
-    }
-} */
-
-/*
-{
-    "Meta Data": {
-        "1. Information": "Daily Time Series with Splits and Dividend Events",
-        "2. Symbol": "AMZN",
-        "3. Last Refreshed": "2023-01-31",
-        "4. Output Size": "Compact",
-        "5. Time Zone": "US/Eastern"
-    },
-    "Time Series (Daily)": {
-        "2023-01-31": {
-            "1. open": "101.155",
-            "2. high": "103.3484",
-            "3. low": "101.14",
-            "4. close": "103.13",
-            "5. adjusted close": "103.13",
-            "6. volume": "66527253",
-            "7. dividend amount": "0.0000",
-            "8. split coefficient": "1.0"
-        }
-    }
-} */ 
